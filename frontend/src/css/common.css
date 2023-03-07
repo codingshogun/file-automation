@@ -1,0 +1,20 @@
+.display-flex {
+    display: flex;
+}
+.flex-center{
+    align-items: center;
+    justify-content: center;
+}
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+img {
+    height: 100%;
+    width: 100%
+}

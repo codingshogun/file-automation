@@ -1,0 +1,9 @@
+.directoryItemContainer ~ ul{
+    margin-left: 13px;
+}
+
+.directoryIcon {
+    fill: none;
+    stroke: blue;
+    stroke-width: 2;
+}
