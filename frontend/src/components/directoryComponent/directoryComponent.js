@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import RenderDirectory from './renderDirectory';
+import "./directoryComponent.css"
 
 function DirectoryComponent() {
   const [data, setData] = useState(null);
@@ -34,7 +35,9 @@ function DirectoryComponent() {
             {error? (
               <h1>{error.message}</h1>
             ): data? (
-              <RenderDirectory directoryData = {data} isHidden={false}/>
+              <div className='directoryContainer'>
+                <RenderDirectory directoryData = {data} isHidden={false}/>
+              </div>
             ): <h1>Loading...</h1> }
         </>
     )

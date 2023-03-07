@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import FileIcon from "../../img/file.svg";
+import FolderIcon from "../../img/folder.svg";
 
 // function RenderDirectory({directoryData}) {
 //     const [data, setData] = useState(null);
@@ -39,6 +41,7 @@ function DirectoryItem({ item }) {
     const [collapse, setCollapse] = useState(false);
     const [rendered, setRendered] = useState(false);
     const [error, setError] = useState(null)
+
   
     const handleClick = (event) => {
       event.stopPropagation();
@@ -72,7 +75,12 @@ function DirectoryItem({ item }) {
 
         return (
             <li>
-              <p onClick={item.isFolder ? handleClick: undefined}>{item.name}</p>  
+              <div className='directoryItemContainer display-flex' onClick={item.isFolder ? handleClick: undefined}>
+                <div style={{height: "15px" , width: "15px"}}>
+                  <img src={item.isFolder? FolderIcon: FileIcon} alt="folder/file" />
+                </div>
+                <p>{item.name}</p>  
+              </div>
               {data && <RenderDirectory directoryData={data} isHidden={collapse}/>}
             </li>
           )
