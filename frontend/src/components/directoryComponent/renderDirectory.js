@@ -57,9 +57,7 @@ function DirectoryItem({ item, configureFeatures }) {
       .then(apiData => {
         apiData = JSON.parse(apiData);
         if(apiData.status){
-            if(item.isFolder){
               setData(apiData.data)
-            }
             setRendered(true)
           }else{
             setError(apiData)
@@ -70,7 +68,8 @@ function DirectoryItem({ item, configureFeatures }) {
       }
     }
 
-    const callItemFeatureApi = (event)=>{
+    const displayFeatures = (event)=>{
+      console.log()
       configureFeatures(item)
     }
 
@@ -83,8 +82,8 @@ function DirectoryItem({ item, configureFeatures }) {
         return (
             <li>
               <div className='directoryItemContainer display-flex' onClick={(event)=>{
-                 getElementsInsideFolder(event); //if its folder get elements inside
-                callItemFeatureApi();
+                 item.isFolder && getElementsInsideFolder(event); //if its folder get elements inside
+                displayFeatures();
               }}>
                 <div className='directoryItemImg'>
                   <img src={item.isFolder? FolderIcon: FileIcon} alt="folder/file" />
