@@ -1,11 +1,13 @@
 const express = require("express")
 const bodyParser = require('body-parser');
 const genereateJson = require("./generateDirectoryJson/script")
+const cors = require("cors")
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.text())
+app.use(cors())
 
 app.post('/api/directoryjson', async (req, res) => {
     try {
