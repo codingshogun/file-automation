@@ -71,7 +71,9 @@ const util = require("util")
 
 // third No recursion
 const generateDirectoryObject =  async (path)=>{ 
-    console.log(path)
+    if(!path){
+        path = pathSystem.parse(__dirname).root
+    }
     
     let pathObject = pathSystem.parse(path);
     try {
