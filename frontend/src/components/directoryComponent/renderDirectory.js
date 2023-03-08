@@ -36,14 +36,14 @@ import FolderIcon from "../../img/folder.svg";
 //     )
 // }
 
-function DirectoryItem({ item }) {
+function DirectoryItem({ item, configureFeatures }) {
     const [data, setData] = useState(null);
     const [collapse, setCollapse] = useState(false);
     const [rendered, setRendered] = useState(false);
     const [error, setError] = useState(null)
 
   
-    const handleClick = (event) => {
+    const getElementsInsideFolder = (event) => {
       event.stopPropagation();
       if(!rendered){
         fetch('http://localhost:4000/api/directoryjson', {
@@ -57,7 +57,9 @@ function DirectoryItem({ item }) {
       .then(apiData => {
         apiData = JSON.parse(apiData);
         if(apiData.status){
-            setData(apiData.data)
+            if(item.isFolder){
+              setData(apiData.data)
+            }
             setRendered(true)
           }else{
             setError(apiData)
@@ -67,6 +69,11 @@ function DirectoryItem({ item }) {
         setCollapse(!collapse)
       }
     }
+
+    const callItemFeatureApi = (event)=>{
+      configureFeatures(item)
+    }
+
     if(error){
         console.log(error.message)
         setError(null)
@@ -75,23 +82,26 @@ function DirectoryItem({ item }) {
 
         return (
             <li>
-              <div className='directoryItemContainer display-flex' onClick={item.isFolder ? handleClick: undefined}>
-                <div style={{height: "15px" , width: "15px"}}>
+              <div className='directoryItemContainer display-flex' onClick={(event)=>{
+                 getElementsInsideFolder(event); //if its folder get elements inside
+                callItemFeatureApi();
+              }}>
+                <div className='directoryItemImg'>
                   <img src={item.isFolder? FolderIcon: FileIcon} alt="folder/file" />
                 </div>
                 <p>{item.name}</p>  
               </div>
-              {data && <RenderDirectory directoryData={data} isHidden={collapse}/>}
+              {data && <RenderDirectory directoryData={data} isHidden={collapse} configureFeatures={configureFeatures}/>}
             </li>
           )
     
   }
   
-  function RenderDirectory({ directoryData, isHidden }) {
+  function RenderDirectory({ directoryData, isHidden, configureFeatures }) {
     return (
       <ul style={{ display: isHidden ? 'none' : 'block' }}>
         {directoryData.map(el => (
-          <DirectoryItem key={el.name} item={el} />
+          <DirectoryItem key={el.name} item={el} configureFeatures={configureFeatures} />
         ))}
       </ul>
     )

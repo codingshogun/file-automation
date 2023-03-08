@@ -1,9 +1,55 @@
-.directoryItemContainer ~ ul{
-    margin-left: 13px;
+.overallDirectoryContainer{
+    padding: 16px;
+    width: 20%;
+    height: 100vh;
 }
 
-.directoryIcon {
-    fill: none;
-    stroke: blue;
-    stroke-width: 2;
+.customSearchDirectory{
+    margin-top: 21px;
+}
+
+.searchDirectoryForm{
+    position: relative;
+    height: 37px;
+}
+
+.searchDirectoryForm input{
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border-radius: 13px;
+    border: 2px solid black;
+    padding-left: 5px;
+}
+.searchDirectoryForm button{
+    position: absolute;
+    right: 0;
+    outline: none;
+    height: 100%;
+    padding: 7px;
+    border-radius: 0 13px 13px 0;
+    border: 2px solid black;
+}
+
+.directoryContainer{
+    margin-top: 11px;
+    overflow: auto;
+    scrollbar-color: black;
+    height: 100%;
+}
+.directoryContainer::-webkit-scrollbar{
+    display: none;
+}
+.directoryItemImg{
+    height: 23px;
+    width: 23px;
+    margin-right: 7px;
+}
+
+.directoryItemContainer{
+    padding:4px
+}
+
+.directoryItemContainer ~ ul{
+    margin-left: 13px;
 }
