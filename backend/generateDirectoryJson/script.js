@@ -79,7 +79,7 @@ const generateDirectoryObject =  async (path)=>{
     try {
         var directoryStats = await fileSystem.promises.lstat(path);
     } catch (error) {
-        return
+        throw new Error(error)
     }
     if(directoryStats.isDirectory()){
         let directoryItems = await fileSystem.promises.readdir(path);
