@@ -2,7 +2,12 @@ const fs = require("fs");
 
 var overAllFiles = [];
 const starter =  (path)=>{
-    console.log(path)
+    if(fs.lstatSync(path).isFile()){
+        if(path.includes(".html")){
+            overAllFiles.push(path)
+        }
+        return overAllFiles  
+    }
     recursiveLoop(path)
     return overAllFiles
 }
