@@ -33,10 +33,10 @@ const getHtmlValues = (dirPath, tagsToMatch)=>{
         matches && matches.forEach(match => {
             let currentValue = match.match(valueRegex);
             singleHtmlObject.tags.push(match);
-            singleHtmlObject.values.push(currentValue);
+            singleHtmlObject.values.push(currentValue[0]);
             singleHtmlObject.pureValues.push(stringToCamelCase(currentValue[0]))
         })
-        htmlObject[pathObject.base] = singleHtmlObject
+            htmlObject[pathObject.base] = singleHtmlObject
     })
 }
 getHtmlValues(wholePath, ["span", "h4"])
