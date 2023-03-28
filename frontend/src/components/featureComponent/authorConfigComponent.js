@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
   const [expandedRows, setExpandedRows] = useState({});
+  const [modifiedObject, setModifiedObject] = useState(authorConfigObject);
+  console.log(modifiedObject)
 
   const removeRow = (path) => {
     const { [path]: removedPath, ...rest } = authorConfigObject;
@@ -15,19 +17,26 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
     });
   };
 
-  const handleSubmit = (event, path) => {
-    event.preventDefault();
-    const name = event.target.name.value;
-    const fieldLabel = event.target.fieldLabel.value;
-    setAuthorConfigObject({
-      ...authorConfigObject,
-      [path]: { ...authorConfigObject[path], name, fieldLabel },
+  const handleChange = (event, path) => {
+    const value = event.target.value;
+    setModifiedObject({
+      ...modifiedObject,
+      [path]: { ...modifiedObject[path], [event.target.name]: value },
     });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setAuthorConfigObject(modifiedObject);
+  };
+
   useEffect(() => {
-    if(!authorConfigObject){
-        setExpandedRows({});
+    setModifiedObject(authorConfigObject);
+  }, [authorConfigObject]);
+
+  useEffect(() => {
+    if (!authorConfigObject) {
+      setExpandedRows({});
     }
   }, [authorConfigObject]);
 
@@ -35,30 +44,52 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
     <>
       {authorConfigObject &&
         Object.keys(authorConfigObject).map((path) => (
-          <div key={path}>
-            <div className="row-title" onClick={() => toggleRow(path)}>
-              {path}
-              <button className="remove-button" onClick={() => removeRow(path)}>
+          <div key={path} className = "authorConfigContainer">
+            <div className="authorConfigHeading display-flex alignItemsCenter" onClick={() => toggleRow(path)}>
+              <p>{path}</p>
+              <button className="button" onClick={() => removeRow(path)}>
                 Remove
               </button>
             </div>
             {expandedRows[path] && (
-              <form onSubmit={(event) => handleSubmit(event, path)}>
-                <div className="row-content">
-                  <label>
-                    Name:
-                    <input type="text" name="name" defaultValue={authorConfigObject[path].name} />
-                  </label>
-                  <label>
-                    Field Label:
-                    <input type="text" name="fieldLabel" defaultValue={authorConfigObject[path].fieldLabel} />
-                  </label>
+                <div className="authorConfigForm">
+                    {modifiedObject[path].tags.map(tag => {
+                    return <div key={tag} className="authorConfigItem">
+                                <div className="itemHeading">
+                                    <p>{tag}</p>
+                                    <button className="button">Remove</button>
+                                </div>
+                            </div>
+                    })}
                 </div>
-                <button type="submit">Save</button>
-              </form>
+            //   <form>
+            //     <div >
+            //       <label>
+            //         Name:
+            //         <input
+            //           type="text"
+            //           name="name"
+            //           value={modifiedObject[path]?.name || ""}
+            //           readOnly
+            //           onChange={(event) => handleChange(event, path)}
+            //         />
+            //       </label>
+            //       <label>
+            //         Field Label:
+            //         <input
+            //           type="text"
+            //           name="fieldLabel"
+            //           value={modifiedObject[path]?.fieldLabel || ""}
+            //           readOnly
+            //           onChange={(event) => handleChange(event, path)}
+            //         />
+            //       </label>
+            //     </div>
+            //   </form>
             )}
           </div>
         ))}
+      <button onClick={handleSubmit}>Save Changes</button>
     </>
   );
 }

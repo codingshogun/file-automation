@@ -9,6 +9,9 @@ body{
     align-items: center;
     justify-content: center;
 }
+.alignItemsCenter{
+    align-items: center;
+}
 *,
 *::before,
 *::after{
