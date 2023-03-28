@@ -23,18 +23,23 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
     }
 
     files.forEach(file => {
-        let singleHtmlObject = {};
+        let singleHtmlObject = [];
         let pathObject = path.parse(file);
         let fileContent = fs.readFileSync(file, "utf-8");
         let matches = fileContent.match(tagRegex);
-        singleHtmlObject.tags = [];
-        singleHtmlObject.values = [];
-        singleHtmlObject.pureValues = [];
+        // singleHtmlObject.tags = [];
+        // singleHtmlObject.values = [];
+        // singleHtmlObject.pureValues = [];
         matches && matches.forEach(match => {
             let currentValue = match.match(valueRegex);
-            singleHtmlObject.tags.push(match);
-            singleHtmlObject.values.push(currentValue[0]);
-            singleHtmlObject.pureValues.push(stringToCamelCase(currentValue[0]))
+            singleHtmlObject.push({
+                html: match,
+                htmlValue: currentValue[0],
+                htmlValueCamelCase: stringToCamelCase(currentValue[0])
+            })
+            // singleHtmlObject.tags.push(match);
+            // singleHtmlObject.values.push(currentValue[0]);
+            // singleHtmlObject.pureValues.push()
         })
             htmlObject[file] = singleHtmlObject
     })

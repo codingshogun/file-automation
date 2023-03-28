@@ -31,19 +31,16 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
   };
 
   useEffect(() => {
-    setModifiedObject(authorConfigObject);
-  }, [authorConfigObject]);
-
-  useEffect(() => {
     if (!authorConfigObject) {
       setExpandedRows({});
     }
+    setModifiedObject(authorConfigObject);
   }, [authorConfigObject]);
 
   return (
     <>
-      {authorConfigObject &&
-        Object.keys(authorConfigObject).map((path) => (
+      {modifiedObject &&
+        Object.keys(modifiedObject).map((path) => (
           <div key={path} className = "authorConfigContainer">
             <div className="authorConfigHeading display-flex alignItemsCenter" onClick={() => toggleRow(path)}>
               <p>{path}</p>
@@ -53,10 +50,10 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
             </div>
             {expandedRows[path] && (
                 <div className="authorConfigForm">
-                    {modifiedObject[path].tags.map(tag => {
+                    {modifiedObject[path].map(tag => {
                     return <div key={tag} className="authorConfigItem">
                                 <div className="itemHeading">
-                                    <p>{tag}</p>
+                                    <p>{tag.html}</p>
                                     <button className="button">Remove</button>
                                 </div>
                             </div>
