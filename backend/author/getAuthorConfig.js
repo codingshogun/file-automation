@@ -6,10 +6,11 @@ const path = require("path")
 const singleFilePath = "D:\\project files\\BAJAJ\\3in1cms\\bajajfinserv-investment-marketplace\\ui.apps\\src\\main\\content\\jcr_root\\apps\\bajajfinserv-investment-marketplace\\components\\clp-page-components\\clpscheme\\clpscheme.html"
 const wholePath = "D:\\project files\\BAJAJ\\3in1cms\\bajajfinserv-investment-marketplace"
 
-const getHtmlValues = (dirPath, tagsToMatch)=>{
+const getAuthorConfig = (dirPath, tagsToMatch)=>{
     let htmlObject = {};
+    
     let files = getAllFiles(dirPath)
-
+    console.log(files.length, dirPath)
     if(!tagsToMatch.length){
         var tagRegex = /<[A-Za-z][A-Za-z0-9\s_="'$(){},:;+-]*>[^<>\s$][^<>]*<\/[A-Za-z]>/g;
         var valueRegex = /(?<=<[A-Za-z][A-Za-z0-9\s_="'$(){},:;+-]*>)[^<>\s$][^<>]*(?=<\/[A-Za-z]>)/g;   
@@ -26,7 +27,6 @@ const getHtmlValues = (dirPath, tagsToMatch)=>{
         let pathObject = path.parse(file);
         let fileContent = fs.readFileSync(file, "utf-8");
         let matches = fileContent.match(tagRegex);
-        singleHtmlObject.path = file;
         singleHtmlObject.tags = [];
         singleHtmlObject.values = [];
         singleHtmlObject.pureValues = [];
@@ -36,7 +36,8 @@ const getHtmlValues = (dirPath, tagsToMatch)=>{
             singleHtmlObject.values.push(currentValue[0]);
             singleHtmlObject.pureValues.push(stringToCamelCase(currentValue[0]))
         })
-            htmlObject[pathObject.base] = singleHtmlObject
+            htmlObject[file] = singleHtmlObject
     })
+    return htmlObject
 }
-getHtmlValues(wholePath, ["span", "h4"])
+module.exports = getAuthorConfig

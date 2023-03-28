@@ -1,7 +1,8 @@
 const express = require("express")
 const bodyParser = require('body-parser');
 const genereateJson = require("./generateDirectoryJson/script")
-const cors = require("cors")
+const cors = require("cors");
+const getAuthorConfig = require("./author/getAuthorConfig");
 
 const app = express();
 
@@ -30,6 +31,25 @@ app.post('/api/directoryjson', async (req, res) => {
         }));
     }
 });
+
+app.post('/api/authorconfig', (req, res)=>{
+    try {
+        const data = getAuthorConfig(req.body.path, req.body.tags)
+        if(!Object.keys(data).length){
+            throw new Error("Something Went Wrong!")
+        }
+        res.json(JSON.stringify({
+            status: true,
+            data: data
+        }))
+    } catch (error) {
+        res.status(500).json(JSON.stringify({
+            status: false,
+            message: error.message,
+            error: error    
+        }));
+    }
+})
 
 const PORT = process.env.PORT || 4000;
 

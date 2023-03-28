@@ -1,11 +1,6 @@
 .overallDirectoryContainer{
-    padding: 16px;
     width: 20%;
     height: 100vh;
-}
-
-.customSearchDirectory{
-    margin-top: 21px;
 }
 
 .searchDirectoryForm{

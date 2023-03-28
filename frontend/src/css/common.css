@@ -1,3 +1,7 @@
+body{
+    padding: 31px;
+}
+
 .display-flex {
     display: flex;
 }
@@ -17,4 +21,10 @@
 img {
     height: 100%;
     width: 100%
+}
+.button{
+    padding: 7px;
+    outline: none;
+    border-radius: 6px;
+    border: 2px solid black;
 }
