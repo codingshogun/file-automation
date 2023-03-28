@@ -3,12 +3,24 @@ import React, { useState, useEffect } from "react";
 function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
   const [expandedRows, setExpandedRows] = useState({});
   const [modifiedObject, setModifiedObject] = useState(authorConfigObject);
-  console.log(modifiedObject)
+  console.log(modifiedObject, authorConfigObject)
 
   const removeRow = (path) => {
-    const { [path]: removedPath, ...rest } = authorConfigObject;
-    setAuthorConfigObject(rest);
+    const { [path]: removedPath, ...rest } = modifiedObject;
+    setModifiedObject(rest);
   };
+
+  const removeInput = (path, index) => {
+    setModifiedObject((prevState) => {
+      const updatedArray = [...prevState[path]];
+      updatedArray.splice(index, 1);
+      return {
+        ...prevState,
+        [path]: updatedArray,
+      };
+    });
+  };
+  
 
   const toggleRow = (path) => {
     setExpandedRows({
@@ -17,11 +29,48 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
     });
   };
 
-  const handleChange = (event, path) => {
-    const value = event.target.value;
-    setModifiedObject({
-      ...modifiedObject,
-      [path]: { ...modifiedObject[path], [event.target.name]: value },
+  const handleChangeFieldType = (event, path, index) => {
+    const { name, value } = event.target;
+    setModifiedObject((prevState) => {
+      const updatedArray = [...prevState[path]];
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [name]: value,
+      };
+      return {
+        ...prevState,
+        [path]: updatedArray,
+      };
+    });
+  };
+  
+  const handleChangeHtmlValue = (event, path, index) => {
+    const { value } = event.target;
+    setModifiedObject((prevState) => {
+      const updatedArray = [...prevState[path]];
+      updatedArray[index] = {
+        ...updatedArray[index],
+        htmlValueCamelCase: value,
+      };
+      return {
+        ...prevState,
+        [path]: updatedArray,
+      };
+    });
+  };
+  
+  const handleChangeFieldLabel = (event, path, index) => {
+    const { value } = event.target;
+    setModifiedObject((prevState) => {
+      const updatedArray = [...prevState[path]];
+      updatedArray[index] = {
+        ...updatedArray[index],
+        fieldLabel: value,
+      };
+      return {
+        ...prevState,
+        [path]: updatedArray,
+      };
     });
   };
 
@@ -50,39 +99,50 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
             </div>
             {expandedRows[path] && (
                 <div className="authorConfigForm">
-                    {modifiedObject[path].map(tag => {
-                    return <div key={tag} className="authorConfigItem">
+                    {modifiedObject[path].map((tag, index) => {
+                    return <div key={tag.html} className="authorConfigItem">
                                 <div className="itemHeading">
                                     <p>{tag.html}</p>
-                                    <button className="button">Remove</button>
                                 </div>
+                                <div className="itemInputs">
+                                  <div className="input">
+                                    <label>
+                                      Dialog Variable Name:
+                                      <input
+                                        type="text"
+                                        name="htmlValueCamelCase"
+                                        value={tag.htmlValueCamelCase || ""}
+                                        onChange={(event) => handleChangeHtmlValue(event, path, index)}
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="input">
+                                    <label>
+                                      Field Label:
+                                      <input
+                                        type="text"
+                                        name="fieldLabel"
+                                        value={tag.fieldLabel || `${tag.htmlValueCamelCase}Label`}
+                                        onChange={(event) => handleChangeFieldLabel(event, path, index)}
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="input">
+                                    <label>
+                                      Field Type:
+                                      <input
+                                        type="text"
+                                        name="fieldType"
+                                        value={tag.fieldType || `textfield`}
+                                        onChange={(event) => handleChangeFieldType(event, path, index)}
+                                      />
+                                    </label>
+                                  </div>
+                                </div>
+                                <button onClick={()=>removeInput(path, index)} className="button">Remove</button>
                             </div>
                     })}
                 </div>
-            //   <form>
-            //     <div >
-            //       <label>
-            //         Name:
-            //         <input
-            //           type="text"
-            //           name="name"
-            //           value={modifiedObject[path]?.name || ""}
-            //           readOnly
-            //           onChange={(event) => handleChange(event, path)}
-            //         />
-            //       </label>
-            //       <label>
-            //         Field Label:
-            //         <input
-            //           type="text"
-            //           name="fieldLabel"
-            //           value={modifiedObject[path]?.fieldLabel || ""}
-            //           readOnly
-            //           onChange={(event) => handleChange(event, path)}
-            //         />
-            //       </label>
-            //     </div>
-            //   </form>
             )}
           </div>
         ))}
