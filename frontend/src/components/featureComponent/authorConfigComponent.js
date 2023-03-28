@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
   const [expandedRows, setExpandedRows] = useState({});
@@ -24,6 +24,12 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
       [path]: { ...authorConfigObject[path], name, fieldLabel },
     });
   };
+
+  useEffect(() => {
+    if(!authorConfigObject){
+        setExpandedRows({});
+    }
+  }, [authorConfigObject]);
 
   return (
     <>

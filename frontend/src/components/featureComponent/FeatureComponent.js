@@ -9,6 +9,7 @@ function FeatureComponent({selectedDirectory}) {
     const [authorConfigObject, setAuthorConfigObject] = useState(null);
 
     const getAuthorConfig = ()=>{
+        setAuthorConfigObject(null)
         fetch('http://localhost:4000/api/authorconfig', {
         method: "POST",
         headers: {
@@ -52,7 +53,7 @@ function FeatureComponent({selectedDirectory}) {
                     </div>
                 </div>
                 <div className="currentFeature">
-                    <AuthorConfigComponent authorConfigObject = {authorConfigObject}/>
+                    <AuthorConfigComponent authorConfigObject = {authorConfigObject} setAuthorConfigObject = {setAuthorConfigObject}/>
                 </div>
             {selectedDirectory && JSON.stringify(selectedDirectory)}
             </div>
