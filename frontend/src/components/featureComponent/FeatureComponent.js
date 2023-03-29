@@ -10,13 +10,13 @@ function FeatureComponent({selectedDirectory}) {
 
     const getAuthorConfig = ()=>{
         setAuthorConfigObject(null)
-        fetch('http://localhost:4000/api/authorconfig', {
+        fetch('http://localhost:4000/api/getauthorconfig', {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
           },
         body: JSON.stringify({path: selectedDirectory.path, tags: []})
-    })
+        })
       .then(response => {
         return response.json()
       })

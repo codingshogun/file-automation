@@ -3,7 +3,9 @@ import React, { useState, useEffect } from "react";
 function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
   const [expandedRows, setExpandedRows] = useState({});
   const [modifiedObject, setModifiedObject] = useState(authorConfigObject);
-  console.log(modifiedObject, authorConfigObject)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [runConfigData, setRunConfigData] = useState(null);
 
   const removeRow = (path) => {
     const { [path]: removedPath, ...rest } = modifiedObject;
@@ -76,21 +78,51 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setAuthorConfigObject(modifiedObject);
+    setAuthorConfigObject({...modifiedObject});
+    console.log(modifiedObject, authorConfigObject)
+    fetch('http://localhost:4000/api/runauthorconfig', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+          },
+        body: JSON.stringify(modifiedObject)
+        })
+      .then(response => {
+        return response.json()
+      })
+      .then(apiData => {
+        apiData = JSON.parse(apiData);
+        if(apiData.status){
+          setRunConfigData(apiData.data)
+        }else{
+          setError(apiData)
+        }
+        setLoading(false)
+      })
+      .catch(error => setError(error))
   };
 
   useEffect(() => {
     if (!authorConfigObject) {
       setExpandedRows({});
     }
-    setModifiedObject(authorConfigObject);
+      setModifiedObject(authorConfigObject);
+    
+    setRunConfigData(null)
   }, [authorConfigObject]);
 
   return (
     <>
-      {modifiedObject &&
-        Object.keys(modifiedObject).map((path) => (
-          <div key={path} className = "authorConfigContainer">
+      {runConfigData? 
+      <>
+        {JSON.stringify(runConfigData)}
+      </>:
+      modifiedObject &&
+        
+        <>
+          <button className="button" onClick={handleSubmit}>Save And Run</button>
+          {Object.keys(modifiedObject).map((path) => (
+          <div key={path} className = "authorConfigContainer border">
             <div className="authorConfigHeading display-flex alignItemsCenter" onClick={() => toggleRow(path)}>
               <p>{path}</p>
               <button className="button" onClick={() => removeRow(path)}>
@@ -101,7 +133,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                 <div className="authorConfigForm">
                     {modifiedObject[path].map((tag, index) => {
                     return <div key={tag.html} className="authorConfigItem">
-                                <div className="itemHeading">
+                                <div className="itemHeading border">
                                     <p>{tag.html}</p>
                                 </div>
                                 <div className="itemInputs">
@@ -122,7 +154,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                                       <input
                                         type="text"
                                         name="fieldLabel"
-                                        value={tag.fieldLabel || `${tag.htmlValueCamelCase}Label`}
+                                        value={tag.fieldLabel || ""}
                                         onChange={(event) => handleChangeFieldLabel(event, path, index)}
                                       />
                                     </label>
@@ -133,7 +165,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                                       <input
                                         type="text"
                                         name="fieldType"
-                                        value={tag.fieldType || `textfield`}
+                                        value={tag.fieldType || ""}
                                         onChange={(event) => handleChangeFieldType(event, path, index)}
                                       />
                                     </label>
@@ -146,7 +178,8 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
             )}
           </div>
         ))}
-      <button onClick={handleSubmit}>Save Changes</button>
+        </>
+      }
     </>
   );
 }

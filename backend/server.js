@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const genereateJson = require("./generateDirectoryJson/script")
 const cors = require("cors");
 const getAuthorConfig = require("./author/getAuthorConfig");
+const runauthorconfig = require("./author/runAuthorConfig");
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.post('/api/directoryjson', async (req, res) => {
     }
 });
 
-app.post('/api/authorconfig', (req, res)=>{
+app.post('/api/getauthorconfig', (req, res)=>{
     try {
         const data = getAuthorConfig(req.body.path, req.body.tags)
         if(!Object.keys(data).length){
@@ -48,6 +49,22 @@ app.post('/api/authorconfig', (req, res)=>{
             message: error.message,
             error: error    
         }));
+    }
+})
+
+app.post('/api/runauthorconfig', (req, res)=>{
+    try {
+        const response = runauthorconfig(req.body);
+        res.json(JSON.stringify({
+            status: true,
+            data: response
+        }))
+    } catch (error) {
+        res.status(500).json(JSON.stringify({
+            status: false,
+            message: error.message,
+            error: error    
+        }));   
     }
 })
 
