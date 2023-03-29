@@ -12,7 +12,9 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
     let files = getAllFiles(dirPath)
     console.log(files.length, dirPath)
     if(!tagsToMatch.length){
-        var tagRegex = /<[A-Za-z][A-Za-z0-9\s_="'$(){},:;+-]*>[^<>\s$][^<>]*<\/[A-Za-z]>/g;
+        console.log("reached")
+        var tagRegex = /<([a-z][a-z0-9]*)[^>]*>(?:(?!.*?\$\{)[^<])+<\/\1>/g;
+        // var tagRegex = /<[A-Za-z][A-Za-z0-9\s_="'$(){},:;+-]*>[^<>\s$][^<>]*<\/[A-Za-z]>/g
         var valueRegex = /(?<=<[A-Za-z][A-Za-z0-9\s_="'$(){},:;+-]*>)[^<>\s$][^<>]*(?=<\/[A-Za-z]>)/g;   
     }else{
         let tempString = "(?:";
@@ -31,7 +33,8 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
         // singleHtmlObject.values = [];
         // singleHtmlObject.pureValues = [];
         matches && matches.forEach(match => {
-            let currentValue = match.match(valueRegex);
+            // let currentValue = match.match(valueRegex);
+            let currentValue = match.split(">")[1].split("<")[0]
             singleHtmlObject.push({
                 html: match,
                 htmlValue: currentValue[0],
@@ -41,7 +44,9 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
             // singleHtmlObject.values.push(currentValue[0]);
             // singleHtmlObject.pureValues.push()
         })
-            htmlObject[file] = singleHtmlObject
+            if(singleHtmlObject.length){
+                htmlObject[file] = singleHtmlObject
+            }
     })
     return htmlObject
 }
