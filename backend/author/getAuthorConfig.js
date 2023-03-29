@@ -32,14 +32,22 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
         // singleHtmlObject.tags = [];
         // singleHtmlObject.values = [];
         // singleHtmlObject.pureValues = [];
+        if(matches){
+            matches = matches.filter((item, index) => {
+                return matches.indexOf(item) === index;
+              });
+        }
         matches && matches.forEach(match => {
             // let currentValue = match.match(valueRegex);
             let currentValue = match.split(">")[1].split("<")[0]
-            singleHtmlObject.push({
-                html: match,
-                htmlValue: currentValue[0],
-                htmlValueCamelCase: stringToCamelCase(currentValue[0])
-            })
+            if(currentValue.trim()){
+                singleHtmlObject.push({
+                    html: match,
+                    htmlValue: currentValue,
+                    htmlValueCamelCase: stringToCamelCase(currentValue)
+                }) 
+            }
+            
             // singleHtmlObject.tags.push(match);
             // singleHtmlObject.values.push(currentValue[0]);
             // singleHtmlObject.pureValues.push()
