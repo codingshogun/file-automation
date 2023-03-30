@@ -26,7 +26,6 @@ const starter =  (path)=>{
       
     }
     recursiveLoop(path)
-    console.log(overAllFiles)
     return overAllFiles
 }
 

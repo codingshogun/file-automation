@@ -14,6 +14,7 @@ const runAuthorConfig = (data)=>{
         try {
             if(path.parse(fileName).ext == ".html"){
                 xmlFilePath = path.join(path.dirname(fileName), '_cq_dialog/.content.xml');
+                var htmlFileData = fs.readFileSync(fileName, 'utf8');
             }else if(path.parse(fileName).ext == ".js"){
                 xmlFilePath = path.join(path.dirname(fileName),'../', '../', '_cq_dialog/.content.xml');
             }
@@ -29,6 +30,12 @@ const runAuthorConfig = (data)=>{
     
                 const itemsTab = xmlDom.getElementsByTagName(tag.storageLocation.split("/")[0])[parseInt(tag.storageLocation.split("/")[1])];
                 itemsTab.appendChild(authorableField); 
+
+                if(path.parse(fileName).ext == ".html"){
+                    let dataToReplace = tag.html.split(">")[1].split("<")[0]
+                    htmlFileData = htmlFileData.replaceAll(tag.html, tag.html.split(dataToReplace)[0] + '${properties.'+tag.htmlValueCamelCase+'}' + tag.html.split(dataToReplace)[1] )
+                    fs.writeFileSync(fileName, htmlFileData);    
+                }
             })
             
             const serializer = new XMLSerializer();
