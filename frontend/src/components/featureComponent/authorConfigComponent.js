@@ -76,6 +76,22 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
     });
   };
 
+  const handleChange = (event, path, index, name) => {
+    const { value } = event.target;
+    setModifiedObject((prevState) => {
+      const updatedArray = [...prevState[path]];
+      updatedArray[index] = {
+        ...updatedArray[index],
+        [name]: value,
+      };
+      return {
+        ...prevState,
+        [path]: updatedArray,
+      };
+    });
+    console.log(modifiedObject, authorConfigObject)
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setAuthorConfigObject({...modifiedObject});
@@ -144,7 +160,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                                         type="text"
                                         name="htmlValueCamelCase"
                                         value={tag.htmlValueCamelCase || ""}
-                                        onChange={(event) => handleChangeHtmlValue(event, path, index)}
+                                        onChange={(event) => handleChange(event, path, index, "htmlValueCamelCase")}
                                       />
                                     </label>
                                   </div>
@@ -155,7 +171,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                                         type="text"
                                         name="fieldLabel"
                                         value={tag.fieldLabel || ""}
-                                        onChange={(event) => handleChangeFieldLabel(event, path, index)}
+                                        onChange={(event) => handleChange(event, path, index, "fieldLabel")}
                                       />
                                     </label>
                                   </div>
@@ -166,7 +182,29 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
                                         type="text"
                                         name="fieldType"
                                         value={tag.fieldType || ""}
-                                        onChange={(event) => handleChangeFieldType(event, path, index)}
+                                        onChange={(event) => handleChange(event, path, index, "fieldType")}
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="input">
+                                    <label>
+                                      Xml File Storage Location:
+                                      <input
+                                        type="text"
+                                        name="storageLocation"
+                                        value={tag.storageLocation || ""}
+                                        onChange={(event) => handleChange(event, path, index, "storageLocation")}
+                                      />
+                                    </label>
+                                  </div>
+                                  <div className="input">
+                                    <label>
+                                      Xml Tag Name:
+                                      <input
+                                        type="text"
+                                        name="xmlTagName"
+                                        value={tag.xmlTagName || ""}
+                                        onChange={(event) => handleChange(event, path, index, "xmlTagName")}
                                       />
                                     </label>
                                   </div>

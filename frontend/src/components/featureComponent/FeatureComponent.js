@@ -4,11 +4,13 @@ import AuthorConfigComponent from "./authorConfigComponent";
 import "./featureComponent.css";
 
 function FeatureComponent({selectedDirectory}) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [authorConfigObject, setAuthorConfigObject] = useState(null);
 
     const getAuthorConfig = ()=>{
+      setLoading(true)
+      setError(null)
         setAuthorConfigObject(null)
         fetch('http://localhost:4000/api/getauthorconfig', {
         method: "POST",
@@ -26,6 +28,7 @@ function FeatureComponent({selectedDirectory}) {
           setAuthorConfigObject(apiData.data)
         }else{
           setError(apiData)
+          console.log(error, "reached")
         }
         setLoading(false)
       })
@@ -35,6 +38,14 @@ function FeatureComponent({selectedDirectory}) {
         <>  
             
             <div className="featuresContainer">
+            {selectedDirectory && (
+              <>
+                <div className="selectedPathDisplay border">
+                  <b>Selected {selectedDirectory.isFolder? "Folder": "File"}</b>
+                  <p>{selectedDirectory.path}</p>
+                </div>
+              </>
+            )}
                 <div className="heading">
                     <h3>Features</h3>
                 </div>
@@ -53,9 +64,26 @@ function FeatureComponent({selectedDirectory}) {
                     </div>
                 </div>
                 <div className="currentFeature">
-                    <AuthorConfigComponent authorConfigObject = {authorConfigObject} setAuthorConfigObject = {setAuthorConfigObject}/>
+                    {loading? (
+                      <>
+                        <div className = "border">
+                          Loading...
+                        </div>
+                      </>
+                    ): (
+                      <>
+                        {error? (
+                          <div className = "border">
+                          {error.message}
+                        </div>
+                          
+                        ): <>
+                        <AuthorConfigComponent authorConfigObject = {authorConfigObject} setAuthorConfigObject = {setAuthorConfigObject}/>
+                      </>}
+                      </>
+                    )}
                 </div>
-            {selectedDirectory && JSON.stringify(selectedDirectory)}
+            
             </div>
         </>
     )

@@ -10,7 +10,6 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
     let htmlObject = {};
     
     let files = getAllFiles(dirPath)
-    console.log(files.length, dirPath)
     if(!tagsToMatch.length){
         console.log("reached")
         var tagRegex = /<([a-z][a-z0-9]*)[^>]*>(?:(?!.*?\$\{)[^<])+<\/\1>/g;
@@ -47,6 +46,8 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
                     htmlValueCamelCase: stringToCamelCase(currentValue),
                     fieldLabel: stringToCamelCase(currentValue)+"Label",
                     fieldType: "textfield",
+                    storageLocation: "items/1",
+                    xmlTagName: stringToCamelCase(currentValue).toLowerCase(),
                 }) 
             }
             
