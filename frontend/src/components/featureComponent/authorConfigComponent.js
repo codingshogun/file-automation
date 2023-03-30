@@ -131,7 +131,14 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
     <>
       {runConfigData? 
       <>
-        {JSON.stringify(runConfigData)}
+        <div className="runConfigDataContainer">
+          <b>{runConfigData.length? runConfigData.length+" Were Files Skipped": "Files Successfully Edited :)"}</b>
+          {runConfigData.map(file=>{
+            return <div className="skippedFileContainer border" key={`file${file.fileName}`}>
+              {file.fileName}
+            </div>
+          })}
+        </div>
       </>:
       modifiedObject &&
         
