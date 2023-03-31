@@ -10,10 +10,9 @@ function stringToCamelCase(str, maxLength = 30) {
     camelCase = str
   }
   return {
-    camelCase: camelCase.charAt(0).toLowerCase() + camelCase.slice(1),
+    camelCase: camelCase.charAt(0).toLowerCase().replace(/\d+/g, "num") + camelCase.slice(1).replace(/\d+/g, "num") + "Name",
     label: camelCase.replace(/([A-Z])/g, ' $1')
   }
 }  
-
   
 module.exports = stringToCamelCase;

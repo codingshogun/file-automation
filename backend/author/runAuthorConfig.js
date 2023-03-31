@@ -25,7 +25,7 @@ const runAuthorConfig = (data)=>{
                 const authorableField = xmlDom.createElement(tag.xmlTagName);
                 authorableField.setAttribute('jcr:primaryType', 'nt:unstructured');
                 authorableField.setAttribute('fieldLabel', tag.fieldLabel);
-                authorableField.setAttribute('name', tag.htmlValueCamelCase);
+                authorableField.setAttribute('name', "./"+tag.htmlValueCamelCase);
                 authorableField.setAttribute('sling:resourceType', `granite/ui/components/foundation/form/${tag.fieldType}`);
     
                 const itemsTab = xmlDom.getElementsByTagName(tag.storageLocation.split("/")[0])[parseInt(tag.storageLocation.split("/")[1])];
