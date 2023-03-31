@@ -12,6 +12,9 @@ body{
 .alignItemsCenter{
     align-items: center;
 }
+.space-between{
+    justify-content: space-between;
+}
 *,
 *::before,
 *::after{
@@ -36,4 +39,14 @@ img {
     margin: 4px 0;
     border: 2px solid black;
     border-radius: 7px;
+}
+
+.input input{
+    padding: 4px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 7px;
+    width: max-content;
+    /* font-size: large */
+    margin: 3px 0;
 }

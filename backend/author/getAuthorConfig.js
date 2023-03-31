@@ -43,11 +43,11 @@ const getAuthorConfig = (dirPath, tagsToMatch)=>{
                 singleHtmlObject.push({
                     html: match,
                     htmlValue: currentValue,
-                    htmlValueCamelCase: stringToCamelCase(currentValue),
-                    fieldLabel: stringToCamelCase(currentValue)+"Label",
+                    htmlValueCamelCase: stringToCamelCase(currentValue).camelCase,
+                    fieldLabel: stringToCamelCase(currentValue).label,
                     fieldType: "textfield",
                     storageLocation: "items/1",
-                    xmlTagName: stringToCamelCase(currentValue).toLowerCase(),
+                    xmlTagName: stringToCamelCase(currentValue).camelCase.toLowerCase(),
                 }) 
             }
             

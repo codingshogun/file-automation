@@ -146,7 +146,7 @@ function AuthorConfigComponent({ authorConfigObject, setAuthorConfigObject }) {
           <button className="button" onClick={handleSubmit}>Save And Run</button>
           {Object.keys(modifiedObject).map((path) => (
           <div key={path} className = "authorConfigContainer border">
-            <div className="authorConfigHeading display-flex alignItemsCenter" onClick={() => toggleRow(path)}>
+            <div className="authorConfigHeading display-flex alignItemsCenter space-between" onClick={() => toggleRow(path)}>
               <p>{path}</p>
               <button className="button" onClick={() => removeRow(path)}>
                 Remove
